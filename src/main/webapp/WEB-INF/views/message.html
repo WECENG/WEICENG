@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Message</title>
+ <!--  <script src="https://cdn.bootcss.com/sockjs-client/1.1.4/sockjs.min.js"></script>-->
+    <script src="/webjars/sockjs-client/1.1.4/dist/sockjs.js"></script>
+    <!--<script th:src="@{/js/sockjs.min.js}"></script>-->
+    <script type="text/javascript">
+        var url='/mes';
+        var sock=new SockJS(url);
+        /*相应事件发生时，会触发该回调函数，下同。
+        * 对于onopen来说，一旦建立连接就触发该事件*/
+        sock.onopen=function () {
+            console.log('Opening');
+            sayMes();
+        };
+        sock.onmessage=function (e) {
+            console.log("received message: "+e.data);
+            sayMes();
+        };
+        sock.onclose=function () { console.log("sending message") };
+
+        function sayMes() {
+            console.log("sending message!");
+            sock.send("Hello new friend.");
+        }
+
+    </script>
+</head>
+<body>
+    <input type="button" th:name="sendmessage" th:value="send" onclick="sayMes()"/>
+</body>
+</html>
